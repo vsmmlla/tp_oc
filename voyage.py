@@ -5,7 +5,7 @@ import copy
 from math import sqrt, inf
 import matplotlib.pyplot as plt
 
-from generic import base_problem, greedy, random_greedy, monte_carlo, tabu, simulated_annealing, name_and_time
+from generic import base_problem, greedy, random_greedy, monte_carlo, tabu, simulated_annealing
 
 
 class ProblemVC(base_problem):
@@ -35,7 +35,6 @@ class ProblemVC(base_problem):
         return res
 
 
-    @name_and_time('naive solution')
     def naive_solution(self):
         def nearest_city(city, list_of_cities):
             shorter_dist = inf
@@ -99,21 +98,33 @@ if __name__ == "__main__":
     pb = ProblemVC(n)
     s = pb.random_solution()
 
+    start = time.time()
     naive = pb.naive_solution()
+    end = time.time()
+    naive_t = end - start
     h_naive = [pb.cost(naive)] * nb_iter
 
     start = time.time()
     best_rg, h_best_rg = random_greedy(pb, s, nb_iter)
+    end = time.time()
+    rgready_t = end - start
+
+    start = time.time()
     best_sa, h_best_sa = simulated_annealing(pb, s, nb_iter, n / 120, 10 / n)
     end = time.time()
+    simula_t = end - start
 
     ### Plots ###
     plt.subplot(2, 2, 1)
-    plt.title('TSM, {} cities, {} iterations per method, computation : {:.2f}s'.format(n, nb_iter, end - start), x=1.1, fontsize=14)
+    plt.title('TSM, {} cities, {} iterations per method'.format(n, nb_iter), x=1.1, fontsize=14)
     plt.plot(h_naive)
     plt.plot(h_best_rg )
     plt.plot(h_best_sa)
-    plt.legend(['naive', 'random greedy', 'simulated annealing'])
+    plt.legend([
+        'naive ({0:.3f}s)'.format(naive_t),
+        'random greedy ({0:.3f}s)'.format(rgready_t),
+        'simulated annealing ({0:.3f}s)'.format(simula_t)
+    ])
     plt.gca().set_prop_cycle(None)
     plt.subplot(2, 2, 2)
     pb.plot_solution(naive, title='naive {0:.3f}'.format(pb.cost(naive)), color='tab:blue')
