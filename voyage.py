@@ -91,9 +91,10 @@ class ProblemVC(base_problem):
 
 
 if __name__ == "__main__":
+    import sys
 
-    n       = 200
-    nb_iter = 7000
+    n       = int(sys.argv[1])
+    nb_iter = int(sys.argv[2])
 
     pb = ProblemVC(n)
     s = pb.random_solution()
