@@ -93,7 +93,7 @@ class ProblemVC(base_problem):
 if __name__ == "__main__":
 
     n       = 200
-    nb_iter = 150000
+    nb_iter = 7000
 
     pb = ProblemVC(n)
     s = pb.random_solution()
@@ -106,8 +106,6 @@ if __name__ == "__main__":
     best_sa, h_best_sa = simulated_annealing(pb, s, nb_iter, n / 120, 10 / n)
     end = time.time()
 
-    #fig, axs = plt.subplot(2, 2, constrained_layout=True)
-
     ### Plots ###
     plt.subplot(2, 2, 1)
     plt.title('TSM, {} cities, {} iterations per method, computation : {:.2f}s'.format(n, nb_iter, end - start), x=1.1, fontsize=14)
@@ -115,7 +113,6 @@ if __name__ == "__main__":
     plt.plot(h_best_rg )
     plt.plot(h_best_sa)
     plt.legend(['naive', 'random greedy', 'simulated annealing'])
-    #plt.legend(['naive', 'random greedy', 'simulated annealing'])
     plt.gca().set_prop_cycle(None)
     plt.subplot(2, 2, 2)
     pb.plot_solution(naive, title='naive {0:.3f}'.format(pb.cost(naive)), color='tab:blue')
